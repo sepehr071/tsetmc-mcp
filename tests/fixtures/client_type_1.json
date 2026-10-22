@@ -1,0 +1,18 @@
+{
+ "clientType": {
+  "recDate": 20261020,
+  "insCode": "46348559193224090",
+  "buy_I_Volume": 1669874360.0,
+  "buy_N_Volume": 3894963494.0,
+  "buy_I_Value": 7288907419820.0,
+  "buy_N_Value": 16852922221640.0,
+  "buy_N_Count": 84,
+  "sell_I_Volume": 4549201950.0,
+  "buy_I_Count": 9829.0,
+  "sell_N_Volume": 1015635904.0,
+  "sell_I_Value": 19724512423480.0,
+  "sell_N_Value": 4417317217980.0,
+  "sell_N_Count": 59,
+  "sell_I_Count": 6880
+ }
+}

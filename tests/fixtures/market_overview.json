@@ -1,0 +1,19 @@
+{
+ "marketOverview": {
+  "lastDataDEven": 0,
+  "lastDataHEven": 0,
+  "indexLastValue": 8173767.36,
+  "indexChange": -98676.99,
+  "indexEqualWeightedLastValue": 2255653.51,
+  "indexEqualWeightedChange": 4306.28,
+  "marketActivityDEven": 20261021,
+  "marketActivityHEven": 180933,
+  "marketActivityZTotTran": 1084261,
+  "marketActivityQTotCap": 488980922399540.0,
+  "marketActivityQTotTran": 75692554535.0,
+  "marketState": "F",
+  "marketValue": 2.3677653177149366e+17,
+  "marketValueBase": 0.0,
+  "marketStateTitle": "بسته"
+ }
+}
