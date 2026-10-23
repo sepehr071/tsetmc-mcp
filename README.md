@@ -37,7 +37,7 @@ quotes, top movers, order book, daily history, real vs legal trading and market 
 - **Output:** compact JSON. Prices in **Rial** (Toman = Rial / 10), volumes in shares, dates Gregorian (`YYYY-MM-DD`).
 - **Network:** tsetmc.com answers only some networks. On HTTP 403, try an Iranian connection or set `TSETMC_MCP_PROXY`.
 - **Machine-readable:** [`server.json`](https://github.com/sepehr071/tsetmc-mcp/blob/main/server.json) and the
-  [awesome-iran-mcp catalog](https://github.com/sepehr071/awesome-iran-mcp).
+  [iran-mcp catalog](https://github.com/sepehr071/iran-mcp).
 
 ## Why
 
@@ -350,7 +350,7 @@ Releases: bump the version in `pyproject.toml` and `server.json`, then push a `v
 
 ## Related servers
 
-- [awesome-iran-mcp](https://github.com/sepehr071/awesome-iran-mcp): catalog of all Iranian-service MCP servers
+- [iran-mcp](https://github.com/sepehr071/iran-mcp): catalog of all Iranian-service MCP servers
 - [tgju-mcp](https://github.com/sepehr071/tgju-mcp) for dollar, gold, coin and commodity prices from TGJU
 - [iran-crypto-mcp](https://github.com/sepehr071/iran-crypto-mcp) for crypto prices on Iranian exchanges
 - [milligold-mcp](https://github.com/sepehr071/milligold-mcp) for gold prices on Milli
@@ -364,9 +364,9 @@ informational and may be delayed. Nothing here is financial advice.
 
 ## Author
 
-<a href="https://www.linkedin.com/in/sepehr-radmard"><img src="https://raw.githubusercontent.com/sepehr071/awesome-iran-mcp/main/assets/author-banner.png" alt="Sepehr Radmard: open-source MCP servers for the Iranian web. LinkedIn: linkedin.com/in/sepehr-radmard" width="100%"></a>
+<a href="https://www.linkedin.com/in/sepehr-radmard"><img src="https://raw.githubusercontent.com/sepehr071/iran-mcp/main/assets/author-banner.png" alt="Sepehr Radmard: open-source MCP servers for the Iranian web. LinkedIn: linkedin.com/in/sepehr-radmard" width="100%"></a>
 
-Built and maintained by **Sepehr Radmard** (سپهر رادمرد). Connect on [LinkedIn](https://www.linkedin.com/in/sepehr-radmard) or follow [@sepehr071 on GitHub](https://github.com/sepehr071) for more MCP servers for Iranian websites, all listed in [awesome-iran-mcp](https://github.com/sepehr071/awesome-iran-mcp). If this saves you time, a star on the repo helps other people find it.
+Built and maintained by **Sepehr Radmard** (سپهر رادمرد). Connect on [LinkedIn](https://www.linkedin.com/in/sepehr-radmard) or follow [@sepehr071 on GitHub](https://github.com/sepehr071) for more MCP servers for Iranian websites, all listed in [iran-mcp](https://github.com/sepehr071/iran-mcp). If this saves you time, a star on the repo helps other people find it.
 
 ## License
 
