@@ -1,6 +1,6 @@
 [project]
 name = "tsetmc-mcp"
-version = "0.1.1"
+version = "0.1.2"
 description = "Unofficial read-only MCP server for the Tehran Stock Exchange (tsetmc.com): quotes, market movers, order book, history, indices."
 readme = "README.md"
 license = "MIT"
