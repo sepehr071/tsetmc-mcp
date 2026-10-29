@@ -15,6 +15,7 @@ quotes, top movers, order book, daily history, real vs legal trading and market 
 [![CI](https://github.com/sepehr071/tsetmc-mcp/actions/workflows/ci.yml/badge.svg)](https://github.com/sepehr071/tsetmc-mcp/actions/workflows/ci.yml)
 [![MCP Registry](https://img.shields.io/badge/MCP_Registry-io.github.sepehr071%2Ftsetmc--mcp-7c3aed)](https://registry.modelcontextprotocol.io/?q=tsetmc-mcp)
 [![License: MIT](https://img.shields.io/badge/license-MIT-16a34a)](https://github.com/sepehr071/tsetmc-mcp/blob/main/LICENSE)
+[![mcpfarsi](https://mcpfarsi.ir/badge/tsetmc-mcp.svg)](https://mcpfarsi.ir/servers/tsetmc-mcp/)
 
 [![Install in VS Code](https://img.shields.io/badge/VS_Code-Install_tsetmc--mcp-0098FF?style=flat-square&logo=visualstudiocode&logoColor=white)](https://vscode.dev/redirect/mcp/install?name=tsetmc&config=%7B%22command%22%3A%22uvx%22%2C%22args%22%3A%5B%22tsetmc-mcp%22%5D%7D)
 
@@ -355,6 +356,7 @@ Releases: bump the version in `pyproject.toml` and `server.json`, then push a `v
 - [iran-crypto-mcp](https://github.com/sepehr071/iran-crypto-mcp) for crypto prices on Iranian exchanges
 - [milligold-mcp](https://github.com/sepehr071/milligold-mcp) for gold prices on Milli
 - [iran-news-mcp](https://github.com/sepehr071/iran-news-mcp) for Iranian news
+- Listed on [mcpfarsi.ir](https://mcpfarsi.ir/servers/tsetmc-mcp/), the Persian MCP marketplace
 
 ## Disclaimer
 
