@@ -432,8 +432,8 @@ async def ts_index_history(
             {
                 "date": _date(r["dEven"]),
                 "close": r["xNivInuClMresIbs"],
-                "high": r["xNivInuPhMresIbs"],
-                "low": r["xNivInuPbMresIbs"],
+                "high": max(r["xNivInuPhMresIbs"], r["xNivInuClMresIbs"]),  # the API rounds high/low to tens, not close
+                "low": min(r["xNivInuPbMresIbs"], r["xNivInuClMresIbs"]),
                 "change_pct": _pct(r["xNivInuClMresIbs"], prev["xNivInuClMresIbs"]),
             }
         )
