@@ -79,15 +79,14 @@ async def ts_search_symbols(
         str,
         Field(
             min_length=1,
-            description="Ticker or company name, Persian (Arabic ي/ك accepted), e.g. 'فولاد', 'خودرو', 'بانک ملت'.",
+            description="Ticker or company name, e.g. 'فولاد', 'بانک ملت'.",
         ),
     ],
-    limit: Annotated[int, Field(ge=1, le=30, description="Max matches (1-30).")] = 10,
+    limit: Annotated[int, Field(ge=1, le=30, description="Max matches.")] = 10,
 ) -> dict[str, Any]:
     """Find Tehran Stock Exchange instruments (shares, funds, rights, bonds) by ticker or name.
 
-    Use first when you only have a name. Pass a result's `symbol` (or `ins_code`) to the other ts_ tools.
-    An empty list means no match: retry with a shorter name or the other spelling.
+    Pass a result's `symbol` or `ins_code` to the other ts_ tools. Empty list: retry a shorter name.
     """
     hits = await _search(query)
     return {
@@ -107,14 +106,11 @@ async def ts_search_symbols(
 
 @tool("Stock quote")
 async def ts_get_quote(
-    symbol: Annotated[
-        str, Field(min_length=1, description="Ticker or exact name, e.g. 'فولاد', 'وبملت', or a numeric ins_code.")
-    ],
+    symbol: Annotated[str, Field(min_length=1, description="Ticker, exact name or ins_code, e.g. 'فولاد'.")],
 ) -> dict[str, Any]:
     """Latest price, daily range, volume and key facts of one instrument on the Tehran Stock Exchange.
 
-    `last` is the last trade, `close` the closing (volume-weighted) price; `change_pct` is last vs yesterday's close.
-    Prices are in Rial. Use ts_order_book for bids and asks, ts_price_history for earlier days.
+    Use ts_order_book for bids and asks, ts_price_history for earlier days.
     """
     ins, _ = await _resolve(symbol)
     info, cp = await asyncio.gather(
@@ -161,22 +157,17 @@ async def ts_get_quote(
 async def ts_market_movers(
     market: Annotated[
         Literal["bourse", "farabourse", "rights", "bonds"],
-        Field(
-            description="bourse = Tehran Stock Exchange shares, farabourse = Iran Fara Bourse shares, rights = rights issues, bonds."
-        ),
+        Field(description="bourse = Tehran shares, farabourse = Fara Bourse shares, plus rights and bonds."),
     ] = "bourse",
     sort_by: Annotated[
         Literal["gain", "loss", "volume", "value", "trades"],
-        Field(
-            description="gain/loss = biggest last-trade change vs yesterday, volume = shares traded, value = Rial traded, trades = trade count."
-        ),
+        Field(description="gain/loss = last-trade change vs yesterday, value = Rial traded."),
     ] = "gain",
-    limit: Annotated[int, Field(ge=1, le=30, description="Max rows (30 keeps the reply under 15 KB).")] = 10,
+    limit: Annotated[int, Field(ge=1, le=30, description="Max rows.")] = 10,
 ) -> dict[str, Any]:
     """Top traded instruments of a market today, ranked by gain, loss, volume, value or trade count.
 
-    Only instruments that traded are listed. `limit_up`/`limit_down` marks a price stuck at its daily limit.
-    Prices are in Rial. Pass a row's `symbol` to ts_get_quote or ts_order_book.
+    Only traded instruments. `limit_up`/`limit_down` = stuck at the daily limit. Pass a row's `symbol` to other ts_ tools.
     """
     params = {
         "market": 0,
@@ -204,7 +195,6 @@ async def ts_market_movers(
             "ins_code": r["insCode"],
             "last": _num(r["pdv"]),
             "close": _num(r["pcl"]),
-            "yesterday": _num(r["py"]),
             "change_pct": _pct(r["pdv"], r["py"]),
             "low": _num(r["pmn"]),
             "high": _num(r["pmx"]),
@@ -223,14 +213,11 @@ async def ts_market_movers(
 
 @tool("Order book")
 async def ts_order_book(
-    symbol: Annotated[
-        str, Field(min_length=1, description="Ticker or exact name, e.g. 'فولاد', or a numeric ins_code.")
-    ],
+    symbol: Annotated[str, Field(min_length=1, description="Ticker, exact name or ins_code, e.g. 'فولاد'.")],
 ) -> dict[str, Any]:
     """Best five bid and ask levels (price, volume, order count) of one instrument.
 
-    Empty outside trading hours. A level with ask price 0 means a buy queue (no sellers), bid price 0 a sell queue.
-    Prices are in Rial.
+    Empty outside trading hours. Ask price 0 = buy queue (no sellers), bid price 0 = sell queue.
     """
     ins, ticker = await _resolve(symbol)
     levels = (await fetch(f"{API}/BestLimits/{ins}"))["bestLimits"]
@@ -258,16 +245,12 @@ async def ts_order_book(
 
 @tool("Daily price history")
 async def ts_price_history(
-    symbol: Annotated[
-        str, Field(min_length=1, description="Ticker or exact name, e.g. 'فولاد', or a numeric ins_code.")
-    ],
-    days: Annotated[
-        int, Field(ge=1, le=50, description="Latest trading days to return (50 keeps the reply under 15 KB).")
-    ] = 20,
+    symbol: Annotated[str, Field(min_length=1, description="Ticker, exact name or ins_code, e.g. 'فولاد'.")],
+    days: Annotated[int, Field(ge=1, le=50, description="Latest trading days.")] = 20,
 ) -> dict[str, Any]:
     """Daily open, high, low, close, volume, trades and value of one instrument for its latest trading days, newest first.
 
-    Prices are in Rial and not adjusted for capital increases or dividends; dates are Gregorian.
+    Prices are unadjusted for capital increases and dividends.
     """
     ins, ticker = await _resolve(symbol)
     rows = (await fetch(f"{API}/ClosingPrice/GetClosingPriceDailyList/{ins}/{days}"))["closingPriceDaily"]
@@ -283,7 +266,6 @@ async def ts_price_history(
                 "low": _num(r["priceMin"]),
                 "close": _num(r["pClosing"]),
                 "last": _num(r["pDrCotVal"]),
-                "yesterday": _num(r["priceYesterday"]),
                 "change_pct": _pct(r["pDrCotVal"], r["priceYesterday"]),
                 "volume": _num(r["qTotTran5J"]),
                 "trades": _num(r["zTotTran"]),
@@ -296,17 +278,12 @@ async def ts_price_history(
 
 @tool("Real vs legal trading")
 async def ts_real_legal(
-    symbol: Annotated[
-        str, Field(min_length=1, description="Ticker or exact name, e.g. 'فولاد', or a numeric ins_code.")
-    ],
-    days: Annotated[
-        int, Field(ge=1, le=10, description="Latest trading days to return (1-10; each day is one upstream call).")
-    ] = 3,
+    symbol: Annotated[str, Field(min_length=1, description="Ticker, exact name or ins_code, e.g. 'فولاد'.")],
+    days: Annotated[int, Field(ge=1, le=10, description="Latest trading days (one upstream call each).")] = 3,
 ) -> dict[str, Any]:
     """Buy and sell volume, value and buyer/seller counts split by real (individual) and legal (institutional) traders per day.
 
-    `net_real_volume` > 0 means individuals bought more than they sold (money flowing in from real investors).
-    Newest day first. Volumes are in shares, values in Rial.
+    `net_real_volume` > 0: individuals net bought. Newest day first.
     """
     ins, ticker = await _resolve(symbol)
     dates = [
@@ -351,13 +328,13 @@ async def _indices() -> list[dict[str, Any]]:
 async def ts_indices(
     query: Annotated[
         str | None,
-        Field(description="Optional part of an index name, e.g. 'بانک', 'خودرو', 'شاخص کل', 'هم وزن'. Omit for all."),
+        Field(description="Part of an index name, e.g. 'بانک', 'هم وزن'. Omit for all."),
     ] = None,
-    limit: Annotated[int, Field(ge=1, le=60, description="Max indices, strongest change first.")] = 60,
+    limit: Annotated[int, Field(ge=1, le=60, description="Max indices, strongest first.")] = 60,
 ) -> dict[str, Any]:
     """TSE total index, market state and trading totals, plus every sector and market index with its change.
 
-    Use to see which sectors lead or lag today. Pass an index `name` to ts_index_history for its past values.
+    Pass an index `name` to ts_index_history for past values.
     """
     overview, idx = await asyncio.gather(fetch(f"{API}/MarketData/GetMarketOverview/1"), _indices())
     o = overview["marketOverview"]
@@ -400,14 +377,14 @@ async def ts_index_history(
         str,
         Field(
             min_length=1,
-            description="Index name or part of it (default total index), e.g. 'شاخص کل', 'بانک', 'خودرو', or a numeric ins_code.",
+            description="Index name or part of it, or ins_code, e.g. 'بانک'.",
         ),
     ] = "شاخص کل",
-    days: Annotated[int, Field(ge=1, le=100, description="Latest trading days to return (1-100).")] = 30,
+    days: Annotated[int, Field(ge=1, le=100, description="Latest trading days.")] = 30,
 ) -> dict[str, Any]:
     """Daily close, high, low and percent change of a TSE index (total, equal-weight, sector...), newest first.
 
-    Find index names with ts_indices.
+    Names: see ts_indices.
     """
     s = fa(index)
     name = None

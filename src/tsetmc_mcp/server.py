@@ -12,13 +12,11 @@ from . import __version__, markets  # noqa: F401  (imports register the tools)
 from .registry import TOOLS
 
 INSTRUCTIONS = """Unofficial, read-only access to TSETMC (tsetmc.com), the Tehran Stock Exchange and Iran Fara Bourse data portal:
-quotes, market movers, order book, daily history, real vs legal trading and indices. Nothing here can log in or trade.
+quotes, movers, order book, daily history, real vs legal trading, indices. Cannot log in or trade.
 
-Workflow:
-1. Market today: ts_indices (total index, market state, sector indices), ts_market_movers (top gain, loss, volume, value).
-2. One stock: ts_get_quote (price, range, volume), ts_order_book (best 5 bids/asks), ts_price_history (daily candles),
-   ts_real_legal (individual vs institutional buy/sell), ts_index_history (past index values).
-3. Unknown name or ambiguous ticker: ts_search_symbols, then pass its `symbol` (or `ins_code`) to the tools above.
+Workflow: ts_indices and ts_market_movers for the market today; ts_get_quote, ts_order_book, ts_price_history,
+ts_real_legal, ts_index_history for one stock or index. Unknown or ambiguous name: ts_search_symbols first, then pass its
+`symbol` (or `ins_code`).
 
 Conventions: tickers and names are Persian (Arabic ي/ك are accepted and normalised to ی/ک). Prices are in Rial
 (divide by 10 for Toman); volumes are in shares; dates are Gregorian. `last` is the last trade, `close` the closing
