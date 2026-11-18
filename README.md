@@ -236,7 +236,7 @@ for an instrument that did not trade today, `ts_order_book` returns no levels an
 <summary><b>I get HTTP 403. What now?</b></summary>
 
 tsetmc.com blocks some networks. Try from an Iranian connection, or set `TSETMC_MCP_PROXY` to an HTTP proxy with an
-Iranian exit. Plain `curl` is always refused because the site checks the TLS fingerprint; the server handles that itself.
+Iranian exit.
 </details>
 
 <details>
