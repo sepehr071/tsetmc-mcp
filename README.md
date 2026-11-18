@@ -183,24 +183,6 @@ Pass a ticker (`فولاد`), an exact name, or a numeric `ins_code` as `symbol`
 
 All 8 tools are annotated `readOnlyHint: true`.
 
-## How it works
-
-```text
-  AI agent  (Claude, Cursor, Copilot, ...)
-      │
-      │  MCP over stdio
-      ▼
-  tsetmc-mcp  (runs on your machine)
-      │
-      │  HTTPS
-      └──────▶  cdn.tsetmc.com   quotes, market watch, order book, indices
-```
-
-`tsetmc-mcp` runs locally and calls the same endpoints the tsetmc.com site uses. It has no hosted server in between
-and no API key. The TSETMC API is undocumented and blocks plain HTTP clients, so requests go out through a
-Chrome-impersonating client. It sends at most 2 requests at a time with a little jitter, keeps answers for 15 seconds,
-retries a failed GET up to twice, and only talks to `cdn.tsetmc.com`. It only reads.
-
 ## Good to know
 
 - **Prices are in Rial**, as TSETMC quotes them. Divide by 10 for Toman. Volumes are in shares.
